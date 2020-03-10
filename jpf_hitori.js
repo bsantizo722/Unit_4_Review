@@ -5,8 +5,8 @@
    Tutorial 11
    Review Assignment
 
-   Author: 
-   Date:   
+   Author: Brandon Santizo
+   Date:     03/9/20
 
    Global Variables
    ================
@@ -46,9 +46,27 @@
       the numbers, blocks, and rating parameters.
 	
 */
+// step 3, use to store store an array pf the puzzle cells
+var allCells;
+// step Cuatro when page is loaded by browser
+window.onload = startUp;
+// step 5 displays the content of the puzzle
+function startUp(){
+   // a, changes inner html of the element 
+   document.getElementById("puzzleTitle").innerHTML = "Puzzle 1";
+   // b, calls functions and returns code
+   document.getElementById("puzzle").innerHTML = drawPuzzle(hitori1Number, hitori1Blocks, hitori1Rating);
+   // c, referances the element pages with class name
+   var puzzleButtons = document.getElementsByClassName("puzzles");
+   for (var i = 0; i < puzzleButtons.length; i++){
+      puzzleButtons[i].onclick = switchPuzzle;
+   }
+   // d, defines the initial
+   setupPuzzle();
+   document.getElementById("check").onclick = finderrors;
+   document.getElementById("solve").onclick = showSolution;
 
-
-
+}
 
 
 
