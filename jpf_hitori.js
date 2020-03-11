@@ -46,32 +46,95 @@
       the numbers, blocks, and rating parameters.
 	
 */
-// step 3, use to store store an array pf the puzzle cells
 var allCells;
-// step Cuatro when page is loaded by browser
 window.onload = startUp;
-// step 5 displays the content of the puzzle
 function startUp(){
-   // a, changes inner html of the element 
-   document.getElementById("puzzleTitle").innerHTML = "Puzzle 1";
-   // b, calls functions and returns code
-   document.getElementById("puzzle").innerHTML = drawPuzzle(hitori1Number, hitori1Blocks, hitori1Rating);
-   // c, referances the element pages with class name
+   document.getElementById("puzzleTitle").innerHTML = "Puzzle1";
+   document.getElementById("puzzle").innerHTML = drawHitori(hitori1Numbers, hitori1Blocks, hitori1Rating);
    var puzzleButtons = document.getElementsByClassName("puzzles");
-   for (var i = 0; i < puzzleButtons.length; i++){
+   for(var i = 0; i < puzzleButtons.length; i++){
       puzzleButtons[i].onclick = switchPuzzle;
    }
-   // d, defines the initial
    setupPuzzle();
-   document.getElementById("check").onclick = finderrors;
+   document.getElementById("check").onclick = findErrors;
    document.getElementById("solve").onclick = showSolution;
-
 }
-
-
-
-
-
+function switchPuzzle(e){
+   if(confirm("Are you sure there buddy?")){
+   var puzzleID = e.target.id;
+   document.getElementById("puzzleTitle").innerHTML= e.target.value;
+   switch(puzzleID){
+      case "puzzle1":
+         document.getElementById("puzzle").innerHTML = drawHitori(hitori1Numbers, hitori1Blocks, hitori1Rating);
+         break;
+      case  "puzzle2":
+         document.getElementById("puzzle").innerHTML = drawHitori(hitori2Numbers, hitori2Blocks, hitori2Rating);
+         break;
+      case  "puzzle3":
+         document.getElementById("puzzle").innerHTML = drawHitori(hitori3Numbers, hitori3Blocks, hitori3Rating);
+         break;
+   }
+   
+   setupPuzzle();
+   }
+}
+function setupPuzzle(){
+   allCells = document.querySelectorAll("table#hitoriGrid td");
+   for(var i = 0; i < allCells.length; i++){
+      allCells[i].style.backgroundColor = "white";
+      allCells[i].style.color = "black";
+      allCells[i].style.borderRadius = "0%";
+      allCells[i].addEventListener("mousedown",
+         function(e){
+            if(e.shiftKey){
+               //Shift key
+               e.target.style.backgroundColor = "white";
+               e.target.style.color = "black";
+               e.target.style.borderRadius = "0";
+            }else if(e.altKey){
+               //Alt key
+               e.target.style.backgroundColor = "black";
+               e.target.style.color = "white";
+               e.target.style.borderRadius = "0";
+            }else{
+               //Any key ???
+               e.target.style.backgroundColor = "rgb(101, 101, 101)";
+               e.target.style.color = "white";
+               e.target.style.borderRadius = "50%";
+            }
+            e.preventDefault();
+         }
+      );
+      allCells[i].addEventListener("mouseover",
+         function(e){
+            //cursor styles
+            if(e.shiftKey){
+               e.target.style.cursor = "url(jpf_eraser.png), alias";
+            }else if(e.altKey){
+               e.target.style.cursor = "url(jpf_block.png), cell";
+            }else{
+               e.target.style.cursor = "url(jpf_circle.png), pointer";
+            } 
+         }
+      );
+      checkSolution();
+   }
+}
+function findErrors(){
+   for(var i = 0; i < allCells.length; i++){
+      if((allCells[i].className === "blocks" && allCells[i].style.backgroundColor === "rgb(101, 101, 101)") || (allCells[i].className === "circles" && allCells[i].style.backgroundColor === "black")){
+         allCells[i].style.color = "red";
+      }
+   }
+   setTimeout(
+      function(e){
+         for(var i = 0; i < allCells.length; i++){
+            if((allCells[i].className === "blocks" && allCells[i].style.backgroundColor === "rgb(101, 101, 101)") || (allCells[i].className === "circles" && allCells[i].style.backgroundColor === "black")){
+               allCells[i].style.color = "white";
+            }
+         }
+      }, 500);
+}
 
 
          
